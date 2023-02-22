@@ -6,6 +6,7 @@ defmodule Protohackers.PricesServer.DBTest do
   test "adding elements and getting the average" do
     db = DB.new()
 
+    assert DB.query(db, 0, 100) == 0
     db =
       db
       |> DB.add(1, 10)

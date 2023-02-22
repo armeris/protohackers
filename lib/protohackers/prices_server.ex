@@ -55,14 +55,12 @@ defmodule Protohackers.PricesServer do
     :gen_tcp.close(socket)
   end
 
-  @limit _100_kb = 1024 * 100
-
   defp handle_requests(socket, db) do
     case :gen_tcp.recv(socket, 9, 10_000) do
       {:ok, data} ->
         case handle_request(data, db)  do
-          {nil, db} -> handle_requests(socket, db)
-
+          {nil, db} ->
+            handle_requests(socket, db)
 
           {response, db} ->
             :gen_tcp.send(socket, response)
