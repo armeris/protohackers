@@ -12,6 +12,7 @@ defmodule Protohackers.PrimeServer do
   @impl true
   def init(:no_state) do
     {:ok, supervisor} = Task.Supervisor.start_link(max_children: 100)
+
     listen_options = [
       mode: :binary,
       active: false,
@@ -59,11 +60,12 @@ defmodule Protohackers.PrimeServer do
     case :gen_tcp.recv(socket, 0, 10_000) do
       {:ok, data} ->
         case Jason.decode(data) do
-          {:ok, %{"method" => "isPrime", "number" => number}} when is_number(number)->
+          {:ok, %{"method" => "isPrime", "number" => number}} when is_number(number) ->
             Logger.debug("Received valid request for number: #{number}")
             response = %{"method" => "isPrime", "prime" => prime?(number)}
             :gen_tcp.send(socket, [Jason.encode!(response), ?\n])
             echo_lines_until_closed(socket)
+
           other ->
             Logger.debug("Received invalid request: #{inspect(other)}")
             :gen_tcp.send(socket, "malformed request\n")
@@ -80,9 +82,9 @@ defmodule Protohackers.PrimeServer do
 
   defp prime?(number) when is_float(number), do: false
   defp prime?(number) when number <= 1, do: false
-  defp prime?(number) when number in [2,3], do: true
+  defp prime?(number) when number in [2, 3], do: true
 
   defp prime?(number) do
-    not Enum.any?(2..trunc(:math.sqrt(number)), &(rem(number, &1)) == 0)
+    not Enum.any?(2..trunc(:math.sqrt(number)), &(rem(number, &1) == 0))
   end
 end

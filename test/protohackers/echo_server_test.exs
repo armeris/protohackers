@@ -28,6 +28,6 @@ defmodule Protohackers.EchoServerTest do
         end)
       end
 
-      Enum.each(tasks, &Task.await/1)
+    Enum.each(tasks, &Task.await/1)
   end
 end

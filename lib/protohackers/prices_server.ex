@@ -14,6 +14,7 @@ defmodule Protohackers.PricesServer do
   @impl true
   def init(:no_state) do
     {:ok, supervisor} = Task.Supervisor.start_link(max_children: 5)
+
     listen_options = [
       mode: :binary,
       active: false,
@@ -58,7 +59,7 @@ defmodule Protohackers.PricesServer do
   defp handle_requests(socket, db) do
     case :gen_tcp.recv(socket, 9, 10_000) do
       {:ok, data} ->
-        case handle_request(data, db)  do
+        case handle_request(data, db) do
           {nil, db} ->
             handle_requests(socket, db)
 

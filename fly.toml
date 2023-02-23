@@ -43,6 +43,17 @@ processes = []
   handlers = []
   port = "5003"
 
+[[services]]
+  http_checks = []
+  internal_port = 5004
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+
+[[services.ports]]
+  handlers = []
+  port = "5004"
+
 [services.concurrency]
   hard_limit = 25
   soft_limit = 20

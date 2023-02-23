@@ -3,7 +3,8 @@ defmodule Protohackers.PricesServer.DB do
     []
   end
 
-  def add(db, timestamp, price) when is_list(db) and is_integer(timestamp) and is_integer(price) do
+  def add(db, timestamp, price)
+      when is_list(db) and is_integer(timestamp) and is_integer(price) do
     [{timestamp, price} | db]
   end
 
@@ -11,7 +12,7 @@ defmodule Protohackers.PricesServer.DB do
     db
     |> Stream.filter(fn {timestamp, _price} -> timestamp >= from and timestamp <= to end)
     |> Stream.map(fn {_timestamp, price} -> price end)
-    |> Enum.reduce({0,0}, fn price, {sum, count} -> {sum + price, count + 1} end)
+    |> Enum.reduce({0, 0}, fn price, {sum, count} -> {sum + price, count + 1} end)
     |> then(fn
       {_sum, 0} -> 0
       {sum, count} -> div(sum, count)

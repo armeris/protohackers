@@ -7,6 +7,7 @@ defmodule Protohackers.PricesServer.DBTest do
     db = DB.new()
 
     assert DB.query(db, 0, 100) == 0
+
     db =
       db
       |> DB.add(1, 10)

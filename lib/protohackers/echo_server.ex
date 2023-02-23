@@ -12,6 +12,7 @@ defmodule Protohackers.EchoServer do
   @impl true
   def init(:no_state) do
     {:ok, supervisor} = Task.Supervisor.start_link(max_children: 100)
+
     listen_options = [
       mode: :binary,
       active: false,
